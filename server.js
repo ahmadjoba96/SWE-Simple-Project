@@ -1,9 +1,14 @@
 const express = require("express");
 const app = express();
+const authRoutes = require("./src/routes/auth.routes");
+const connectDB = require("./src/config/db");
+const dotenv = require("dotenv");
+dotenv.config();
 
 // Middleware to parse JSON body
 app.use(express.json());
 
+connectDB();
 // Simple test route
 app.get("/", (req, res) => {
   res.send("API is running ");

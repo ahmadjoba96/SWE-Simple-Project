@@ -1,43 +1,41 @@
 const bcrypt = require("bcryptjs");
-
-let users = [];
-let currentId = 1;
+const User = require("../models/user.model");
 
 class UserRepository {
     async createUser({ name, email, password, role }) {
-        const existing = users.find((u) => u.email === email);
+        const existing = await User.findOne({ email });
         if (existing) {
             throw new Error("EMAIL_EXISTS");
         }
 
         const passwordHash = await bcrypt.hash(password, 10);
 
-        const user = {
-            id: currentId++,
+        const user = await User.create({
             name,
             email,
             passwordHash,
             role: role || "customer",
             isVerified: false,
-        };
+        });
 
-        users.push(user);
         return user;
     }
 
     async findByEmail(email) {
-        return users.find((u) => u.email === email) || null;
+        return await User.findOne({ email });
     }
 
     async verifyUser(email) {
-        const user = users.find((u) => u.email === email);
+        const user = await User.findOne({ email });
         if (!user) return null;
+
         user.isVerified = true;
+        await user.save();
         return user;
     }
 
-    getAllUsers() {
-        return users;
+    async getAllUsers() {
+        return await User.find({});
     }
 }
 
