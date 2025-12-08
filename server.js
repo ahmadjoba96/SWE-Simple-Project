@@ -9,6 +9,8 @@ app.get("/", (req, res) => {
   res.send("API is running ");
 });
 
+app.use("/api/auth", authRoutes);
+
 // Start server
 const PORT = 3000;
 app.listen(PORT, () => {
