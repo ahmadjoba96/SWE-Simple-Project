@@ -8,7 +8,7 @@ const verificationStrategy = new SimpleCodeStrategy("1234");
 
 const JWT_SECRET = "SUPER_SECRET_KEY_123"; // غيّره لو حاب
 
-
+//register-jira
 exports.register = async (req, res) => {
     try {
         const { name, email, password } = req.body;
