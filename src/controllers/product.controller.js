@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const productRepo = require("../repositories/product.repository");
 const categoryRepo = require("../repositories/category.repository");
 
@@ -5,20 +6,31 @@ exports.create = async (req, res) => {
   try {
     const { name, price, categoryId } = req.body;
 
+    // 1) Check if categoryId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+
+    // 2) Check if category exists
     const category = await categoryRepo.getById(categoryId);
     if (!category) {
-      return res.status(400).json({ message: "Category does not exist" });
+      return res.status(404).json({ message: "Category not found" });
     }
 
     const product = await productRepo.create({
       name,
       price,
-      categoryId
+      categoryId,
     });
 
-    res.status(201).json({ message: "Product created", product });
+    return res.status(201).json({
+      message: "Product created",
+      product,
+    });
+
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
