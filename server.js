@@ -27,7 +27,7 @@ const PORT = process.env.PORT ? Number(process.env.PORT) : 8080;
 console.log("Using PORT =", PORT);
 console.log("MONGODB =", process.env.MONGODB_URI);
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on port ${PORT}`);
 });
 
