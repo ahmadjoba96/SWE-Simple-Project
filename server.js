@@ -22,7 +22,10 @@ app.use("/api/auth", require("./src/routes/auth.routes"));
 app.use("/api/categories", require("./src/routes/category.routes"));
 app.use("/api/products", require("./src/routes/product.routes"));
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT ? Number(process.env.PORT) : 8080;
+
+console.log("Using PORT =", PORT);
+console.log("MONGODB =", process.env.MONGODB_URI);
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
